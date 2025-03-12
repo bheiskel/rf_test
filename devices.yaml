@@ -1,0 +1,66 @@
+NRF52840: 
+  firmware:
+    app: hex/nrf52840.hex
+  fem:
+    fem_config_reg0: 0x10001084
+    fem_config_reg1: 0x10001088
+
+NRF52833: 
+  firmware:
+    app: hex/nrf52833.hex
+  fem:
+    fem_config_reg0: 0x10001084
+    fem_config_reg1: 0x10001088
+NRF52820: 
+  firmware:
+    app: hex/nrf52820.hex
+  fem:
+    fem_config_reg0: 0x10001084
+    fem_config_reg1: 0x10001088
+NRF52832: 
+  firmware:
+    app: hex/nrf52832.hex
+  fem:
+    fem_config_reg0: 0x10001084
+    fem_config_reg1: 0x10001088
+NRF52811: 
+  firmware:
+    app: hex/nrf52811.hex
+  fem:
+    fem_config_reg0: 0x10001084
+    fem_config_reg1: 0x10001088
+NRF52810: 
+  firmware:
+    app: hex/nrf52810.hex
+  fem:
+    fem_config_reg0: 0x10001084
+    fem_config_reg1: 0x10001088
+NRF52805: 
+  firmware:
+    app: hex/nrf52805.hex
+  fem:
+    fem_config_reg0: 0x10001084
+    fem_config_reg1: 0x10001088
+NRF5340: 
+  firmware:
+    net: hex/nrf5340.hex
+    app: hex/empty_app_core.hex
+  load_cap:
+    coprocessor: APPLICATION
+    config_register: 0x00FF8100
+    multiply_factor: 2
+  fem:
+    coprocessor: NETWORK
+    fem_config_reg0: 0x01FF8304
+    fem_config_reg1: 0x01FF8308
+
+NRF54L15: 
+  firmware:
+    app: hex/nrf54l15.hex
+  load_cap:
+    coprocessor: APPLICATION
+    config_register: 0x00FFD500
+    multiply_factor: 4
+  fem:
+    fem_config_reg0: 0x00FFD504
+    fem_config_reg1: 0x00FFD508
