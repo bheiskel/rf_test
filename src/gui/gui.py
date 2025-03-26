@@ -135,6 +135,10 @@ class MainWindow(Ui_MainWindow, QMainWindow):
         self.deviceVersion.setCurrentText(device)
 
     def updateDongleFWVersion(self, version):
+        if version == "":
+            self.startButton.setDisabled(True)
+        else:
+            self.startButton.setDisabled(False)
         self.dongleFWVersion.setText(version)
 
     def startTest(self):
