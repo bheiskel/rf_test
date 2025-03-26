@@ -8,7 +8,7 @@ from src.modules.nrfutil_wrapper import (
     NrfutilError,
 )
 from src.modules.rf_test_dongle_api import API as Dongle
-from src.modules.rf_test_dongle_api import RadioConfig
+from src.modules.rf_test_dongle_api import RadioConfig, RFTestDongleError
 from src.modules.rf_test_exception import RFTestException
 
 from yaml import safe_load
@@ -131,9 +131,9 @@ class DongleFWVersionTask(QThread):
         try:
             with Dongle() as dongle:
                 version = dongle.get_dongle_version()
-        except RFTestException as err:
+        except RFTestDongleError as err:
             logger.error(err)
-            version = 'no dongle connected'
+            version = None
         guiSignals.dongle_fw_version.emit(version)
 
 
