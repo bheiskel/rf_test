@@ -89,13 +89,9 @@ def detect_device(snr: str) -> None | str:
         device_version = Nrfutil(snr=int(snr)).get_device_version().split('_')[0]
     except (NrfutilError, NrfutilLowVoltageError, NrfutilReadbackError) as err:
         handle_error(err)
-        device_version = None
+        device_version = ""
     guiSignals.update_device.emit(device_version)
     return device_version
-
-
-def write_register(addr: int, val: int, snr: int, device: str, core: Core = Core.APPLICATION):
-    debugger = Nrfutil(snr)
 
 
 def fem_config_to_ints(fem_config: dict) -> None | dict:
@@ -198,7 +194,6 @@ class FlashFWTask(QThread):
 
                 fem_config_reg1 = self.fem_config.get('pinANTSEL') | 0xFFFFFF << 8
 
-                # logger.debug(f"fem_config_reg0: {hex(fem_config_reg0)}    fem_config_reg1: {hex(fem_config_reg1)}")
                 fem_config_reg0_addr = devices.get(device).get('fem').get('fem_config_reg0')
                 fem_config_reg1_addr = devices.get(device).get('fem').get('fem_config_reg1')
                 coprocessor = devices.get(device).get('fem').get('coprocessor', 'APPLICATION')
