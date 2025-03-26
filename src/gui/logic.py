@@ -43,6 +43,7 @@ class GUISignals(QObject):
     recovery_completed = Signal()
     test_started_success = Signal(bool)
     error = Signal(str)
+    reset_buttons = Signal()
 
 
 guiSignals = GUISignals()
@@ -77,6 +78,7 @@ def handle_error(err: Exception) -> None:
         message = "No connection to the device"
     else:
         raise err
+    guiSignals.reset_buttons.emit()
     guiSignals.error.emit(message)
 
 
