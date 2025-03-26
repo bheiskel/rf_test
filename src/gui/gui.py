@@ -40,6 +40,7 @@ class MainWindow(Ui_MainWindow, QMainWindow):
         self.signals.recovery_completed.connect(self.updateRecoverButton)
         self.signals.test_started_success.connect(self.updateStartButton)
         self.signals.error.connect(self.errorDialog)
+        self.signals.reset_buttons.connect(self.resetButtonState)
 
         # GUI fields update
         self.deviceVersion.currentTextChanged.connect(self.loadCapVisibility)
@@ -204,6 +205,10 @@ class MainWindow(Ui_MainWindow, QMainWindow):
         errorMsgBox = QMessageBox()
         errorMsgBox.setText(message)
         errorMsgBox.exec()
+
+    def resetButtonState(self):
+        self.flashButton.setStyleSheet("background-color: light gray")
+        self.flashButton.setText("Flash")
 
 
 class GUI:
