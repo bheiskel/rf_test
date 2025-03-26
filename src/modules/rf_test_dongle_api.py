@@ -15,6 +15,9 @@ class RadioConfig:
     fem_config: int
     usb_cmd: int
 
+    def __setitem__(self, key, value):
+        setattr(self, key, value)
+
 
 VENDOR_ID = 0x1915
 PRODUCT_ID = 0x0103
