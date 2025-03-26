@@ -20,6 +20,20 @@ VENDOR_ID = 0x1915
 PRODUCT_ID = 0x0103
 
 
+class RFTestDongleError(Exception):
+    def __init__(self, *args):
+        if args:
+            self.message = f'{" - ".join(map(str,args))}'
+        else:
+            self.message = None
+
+    def __str__(self):
+        if self.message:
+            return 'RFTestDongleError, {}'.format(self.message)
+        else:
+            return 'RFTestDongleError occurred'
+
+
 class API:
     def __init__(self):
         self.radio_config = RadioConfig(
@@ -34,7 +48,7 @@ class API:
 
         self.dev = usb.core.find(idVendor=VENDOR_ID, idProduct=PRODUCT_ID)
         if not self.dev:
-            raise RFTestException("USB dongle not found")
+            raise RFTestDongleError("USB dongle not found")
         self.dev.set_configuration()
         cfg = self.dev.get_active_configuration()
         intf = cfg[(0, 0)]
