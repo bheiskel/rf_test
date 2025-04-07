@@ -137,6 +137,7 @@ class MainWindow(Ui_MainWindow, QMainWindow):
     def updateDongleFWVersion(self, version):
         if version == "":
             self.startButton.setDisabled(True)
+            self.errorDialog("No RF test dongle connected")
         else:
             self.startButton.setDisabled(False)
         self.dongleFWVersion.setText(version)
