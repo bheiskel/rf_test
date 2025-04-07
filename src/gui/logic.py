@@ -29,8 +29,8 @@ class TestModes(Enum):
 
 
 class DataRates(Enum):
-    BLE_1_Mbit = 5
-    BLE_2_Mbit = 6
+    BLE_1_Mbit = 3
+    BLE_2_Mbit = 4
     NRF_1_Mbit = 0
     NRF_2_Mbit = 1
 
