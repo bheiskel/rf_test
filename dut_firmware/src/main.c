@@ -89,6 +89,10 @@ int clocks_start(void)
 			return res;
 		}
 	} while (err);
+#if defined(NRF54L15_XXAA)
+	/* MLTPAN-20 */
+	nrf_clock_task_trigger(NRF_CLOCK, NRF_CLOCK_TASK_PLLSTART);
+#endif /* defined(NRF54L15_XXAA) */
 
 
 	LOG_DBG("HF clock started");
@@ -326,6 +330,7 @@ int main(void)
 			radio_test_init(&my_config);
 			/* Start radio test - needs a physical reset to stop or retest */
 			radio_test_start(&my_config);
+			return 0;
 		}
 		k_msleep(100);
 	}
