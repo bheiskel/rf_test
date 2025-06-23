@@ -53,10 +53,29 @@ NRF5340:
     coprocessor: NETWORK
     fem_config_reg0: 0x01FF8304
     fem_config_reg1: 0x01FF8308
-
 NRF54L15: 
   firmware:
     app: hex/nrf54l15.hex
+  load_cap:
+    coprocessor: APPLICATION
+    config_register: 0x00FFD500
+    multiply_factor: 4
+  fem:
+    fem_config_reg0: 0x00FFD504
+    fem_config_reg1: 0x00FFD508
+NRF54L10: 
+  firmware:
+    app: hex/nrf54l10.hex
+  load_cap:
+    coprocessor: APPLICATION
+    config_register: 0x00FFD500
+    multiply_factor: 4
+  fem:
+    fem_config_reg0: 0x00FFD504
+    fem_config_reg1: 0x00FFD508
+NRF54L05: 
+  firmware:
+    app: hex/nrf54l05.hex
   load_cap:
     coprocessor: APPLICATION
     config_register: 0x00FFD500
