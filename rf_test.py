@@ -1,15 +1,41 @@
 from argparse import ArgumentParser
 from loguru import logger
 from src.gui.gui import GUI
-import sys, yaml
+from src.modules.automatic_rf_test import AutoTest
+from src.modules.nrfutil_wrapper import API as nrfutilAPI, Core
+from src.gui.logic import get_hex_files
+from yaml import safe_load
+import sys
 
-VERSION = '1.0.0'
 REQ_DONGLE_VERSION = '1.0.0'
+
+VERSION = '1.1.0'
+
+DEFAULT_VOLTAGE = 3.0
+DEFAULT_CURRENT = 0.1
+DEFAULT_CHANNEL = 1
 
 parser = ArgumentParser(prog="RF test", description="RF test")
 
 parser.add_argument('-v', '--version', help='Print version number', action='store_true')
 parser.add_argument('-V', '--verbose', help='Enable verbose logging', action='store_true')
+
+auto_test_mode_args = parser.add_argument_group('Automatic RF test mode')
+auto_test_mode_args.add_argument('-a', '--auto', help='Automatic test mode for RF tuning', action='store_true')
+auto_test_mode_args.add_argument(
+    '--frequencies', default=[2, 40, 80], help='Test frequencies for automatic test mode'
+),
+auto_test_mode_args.add_argument('--tx_powers', default=[8, 4, 0], help='Test TX powers for automatic test mode')
+auto_test_mode_args.add_argument('--spectrum_ip', help='Spectrum analyzer ip for automatic test mode')
+auto_test_mode_args.add_argument('--power_supply_ip', help='Power supply ip for automatic test mode')
+auto_test_mode_args.add_argument('--img_path', default='', help='Path for output images')
+auto_test_mode_args.add_argument('--img_prefix', default='', help='Prefix for output images')
+auto_test_mode_args.add_argument('--ref_offset', default=0.7, help='Reference level offset for automatic test mode')
+
+flasher = parser.add_argument_group('FW flasher')
+flasher.add_argument('-f', '--flash', action='store_true')
+flasher.add_argument('--snr', default=None)
+flasher.add_argument('--loadcap', default=None, help='Internal load capacitance')
 
 args = parser.parse_args()
 
@@ -27,6 +53,49 @@ if args.version:
             print(f'dongle_fw: {dongle_fw_version}')
     except:
         pass
+    exit()
+
+if args.flash:
+    logger.info('Flasing test FW')
+
+    with open('devices.yaml', 'r') as f:
+        devices = safe_load(f)
+
+    debugger = nrfutilAPI(args.snr)
+    device = debugger.get_device_version().split('_')[0]
+    testFW = get_hex_files(device)
+    debugger.program(testFW)
+
+    if args.loadcap:
+        if load_cap_config := devices.get(device).get('load_cap'):
+            logger.debug(f"Configuring internal load caps to: {args.loadcap}")
+            debugger.write(
+                load_cap_config.get('config_register'),
+                int(float(args.loadcap) * load_cap_config.get('multiply_factor', 1)),
+                getattr(Core, load_cap_config.get('coprocessor')),
+            )
+            debugger.reset()
+
+    if not args.auto:
+        exit()
+
+if args.auto:
+    if not args.spectrum_ip:
+        print('Spectrum IP required for automatic testing')
+        exit()
+    if not args.power_supply_ip:
+        print('Power supply IP required for automatic testing')
+        exit()
+    logger.info("Starting automated RF test")
+    auto_test = AutoTest(args.ref_offset, args.img_path, args.img_prefix)
+    logger.info("Initializing power supply")
+    auto_test.init_power_supply(args.power_supply_ip, DEFAULT_VOLTAGE, DEFAULT_CURRENT, DEFAULT_CHANNEL)
+    logger.info("Initializing spectrum analyzer")
+    auto_test.init_spectrum(args.spectrum_ip, args.ref_offset)
+    logger.info("Measuring frequency offset")
+    auto_test.measure_freq_offset()
+    logger.info("Measuring output power and harmonics")
+    auto_test.rf_tuning_measurements(args.frequencies, args.tx_powers)
     exit()
 
 logger.debug('Starting GUI')
