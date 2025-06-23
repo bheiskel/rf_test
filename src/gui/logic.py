@@ -18,6 +18,7 @@ from loguru import logger
 from enum import Enum
 import os, re
 from dataclasses import fields
+import __main__
 
 
 class TestModes(Enum):
@@ -127,6 +128,8 @@ class DongleFWVersionTask(QThread):
         try:
             with Dongle() as dongle:
                 version = dongle.get_dongle_version()
+            if version != __main__.REQ_DONGLE_VERSION:
+                guiSignals.error.emit("Incorrect dongle version found")
         except RFTestDongleError as err:
             logger.error(err)
             version = None

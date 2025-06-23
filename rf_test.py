@@ -4,6 +4,7 @@ from src.gui.gui import GUI
 import sys, yaml
 
 VERSION = '1.0.0'
+REQ_DONGLE_VERSION = '1.0.0'
 
 parser = ArgumentParser(prog="RF test", description="RF test")
 
