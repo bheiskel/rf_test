@@ -2,6 +2,8 @@
 
 declare -A DEVICES
 DEVICES[nrf54l15]="nrf54l15dk/nrf54l15/cpuapp"
+DEVICES[nrf54l10]="nrf54l15dk/nrf54l10/cpuapp"
+DEVICES[nrf54l05]="nrf54l15dk/nrf54l05/cpuapp"
 DEVICES[nrf5340]="nrf5340dk/nrf5340/cpunet"
 DEVICES[nrf52840]="nrf52840dk/nrf52840"
 DEVICES[nrf52833]="nrf52833dk/nrf52833"

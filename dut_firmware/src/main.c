@@ -12,7 +12,7 @@
 #include <zephyr/types.h>
 #include "radio_test.h"
 
-#ifdef CONFIG_SOC_NRF54L15
+#if defined(CONFIG_SOC_NRF54L15) || defined(CONFIG_SOC_NRF54L10) || defined(CONFIG_SOC_NRF54L05)
 #include <hal/nrf_oscillators.h>
 #include <hal/nrf_clock.h>
 #endif
@@ -162,7 +162,7 @@ int main(void)
 	uint8_t pin_rxen = 0xFF;
 	uint8_t pin_mode = 0xFF;
 	uint8_t pin_antsel = 0xFF;
-#ifdef CONFIG_SOC_NRF54L15
+#if defined(CONFIG_SOC_NRF54L15) || defined(CONFIG_SOC_NRF54L10) || defined(CONFIG_SOC_NRF54L05)
 	uint32_t load_cap = (volatile uint32_t) NRF_UICR->OTP[0];
 	uint32_t fem_config_0 = (volatile uint32_t) NRF_UICR->OTP[1];
 	uint32_t fem_config_1 = (volatile uint32_t) NRF_UICR->OTP[2];

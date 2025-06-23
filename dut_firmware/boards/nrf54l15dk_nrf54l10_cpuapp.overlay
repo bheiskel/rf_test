@@ -1,0 +1,12 @@
+&uicr {
+	nfct-pins-as-gpios;
+};
+
+&vregmain {
+	status = "okay";
+	regulator-initial-mode = <NRF5X_REG_MODE_DCDC>;
+};
+
+&dppic10{
+	status="okay";
+};
